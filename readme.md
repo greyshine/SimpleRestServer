@@ -1,5 +1,11 @@
 # Restservices-Server
 
+A simple rest server providing the basics of http rest methods.
+Inspired by theaw articles:  
+ 
+* <http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api>  
+* <http://blog.mwaysolutions.com/2014/06/05/10-best-practices-for-better-restful-api>
+
 ## Contents
 <!-- process:toc(2) -->
 * [Quickstart](#Quickstart)
@@ -9,52 +15,33 @@
 
 <a name="Quickstart"></a>
 ## Quickstart
-* Store the latest release
-* java -jar RestServices-X.jar
+* Have java installed. Call on terminal:  
+``java -version``  
+Did you see meaningful output?
+* Store the latest release:  
+TODO: reference to downoad:``curl -o ``
+* Start Server with filebased json storage:  
+``java -jar SimpleRestServices-\<Version>.jar -port.http 7777``
+* Call HTTP-Post to insert data:  
+``
+curl -X POST -D"{text:"some text"}" http://localhost:7777/testcollections 
+``
+* Call HTTP-List to get data:  
+``
+curl -X POST http://localhost:777/testcollections 
+``
+* 
 
-Call HTTP-Post to insert data:  
-```
-curl -X POST -D"" http://localhost:8080/testcollections 
-```
-
-Call HTTP-List to load data:  
-```
-curl -X POST http://localhost:8080/testcollections 
-```
-
-## Quickstart
-
-* prerequesites  
-TODO fill
-* download  
-* start java jar  
-TODO fill  
-* post via curl  
-TODO fill
-* get  
-TODO fill  
 * stop service  
 TODO fill
 
-## Implementation inspired and followed by
 
-* <http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api>
-* <http://blog.mwaysolutions.com/2014/06/05/10-best-practices-for-better-restful-api>
 
 ## Features
-* REST Server which in base configuration handles JSONs on the file system
+* REST Server which in base configuration handles JSONs
 * Fileupload and Download. Integrated into the Json
 * Delivering webcontent
-* 
-
-## <a name="Technologies used"></a>Technologies used
-but not needed for running
-
-* Java
-* Jetty
-* Jersey
-
-
+* Admin GUI
 
 ## Configurations
 ### Server configurations
