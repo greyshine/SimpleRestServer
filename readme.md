@@ -1,15 +1,18 @@
 # Restservices-Server
 
 A simple rest server providing the basics of http rest methods.
-Inspired by theaw articles:  
+Inspired by these articles:  
  
 * <http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api>  
 * <http://blog.mwaysolutions.com/2014/06/05/10-best-practices-for-better-restful-api>
 
+The whole thing is still under construction...
+I just wanted to get it out of the door.
+Tests are running.
+
 ## Contents
 <!-- process:toc(2) -->
 * [Quickstart](#Quickstart)
-* Implementation inspired and followed by
 * [Technologies used](#Technologies used)
 * ...
 
@@ -22,7 +25,7 @@ Inspired by theaw articles:
   Did you see meaningful output?
 * Get the latest release:  
 
-  TODO: reference to downoad:``curl -o ``
+  TODO: reference to dowload:``curl -o ``
 
 * Start Server with filebased json storage:  
   
@@ -42,8 +45,8 @@ TODO fill
 
 
 ## Features
-* REST Server which in base configuration handles JSONs
-* Fileupload and Download. Integrated into the Json
+* REST Server for Json Documents
+* Fileupload and Download.
 * Delivering webcontent
 * Admin GUI
 
@@ -86,7 +89,7 @@ The name of a collection always ends with an 's'. This indicates the plural of h
 
  You can run a simple ping which returns a simple pong with a timestamp 
 
- ``curl -X STATUS <address:port>/ping``
+ ``curl -X META <address:port>/ping``
 
  which will answer:   
  
@@ -96,9 +99,13 @@ The name of a collection always ends with an 's'. This indicates the plural of h
 
  delivers a status of the system.
  
+ ``curl -X META <address:port>/status``
+ 
 * Logs
 
  shows log files
+
+ curl -X META <address:port>/status
 
 ## Assumptions made, Predefined things
 * property names of user json documents must never start with a $ or _
