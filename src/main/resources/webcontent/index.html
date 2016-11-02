@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" ng-app>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="css/bootstrap.css" rel="stylesheet" type="text/css"></link>
+<link href="css/app.css" rel="stylesheet" type="text/css"></link>
+<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/angular-1.5.0.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+<style>
+body {
+	padding: 10px;
+}
+</style>
+<script type="text/javascript">
+	
+</script>
+</head>
+
+<body>
+
+	<nav class="navbar navbar-default">
+		<div class="navbar-brand">Simple Rest Server</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a id="nav-restGet" href="#"
+					onclick="app.get.click(this); return false;">GET</a></li>
+				<li><a id="nav-restPost" href="#"
+					onclick="app.post.click(this); return false;">POST</a></li>
+				<li><a id="nav-restPut" href="#"
+					onclick="app.put.click(this); return false;">PUT</a></li>
+				<li><a id="nav-restPatch" href="#"
+					onclick="app.patch.click(this); return false;">PATCH</a></li>
+				<li><a id="nav-restDelete" href="#"
+					onclick="app.delete.click(this); return false;">DELETE</a></li>
+				<li><a id="nav-status" href="#"
+					onclick="app.status.click(this); return false;">Status</a></li>
+				<!-- funny feature comes later 
+				<li><a id="nav-imageGreetings" href="#"
+					onclick="app.imageGreetings.click(this); return false;">Image-Greetings</a></li>
+				-->
+			</ul>
+			<div style="font-size: 0.7em; text-align: right;">
+			<span id="statusVersion"></span><br/>
+			<span id="statusHttpAddress"></span><br/>
+			<span id="statusHttpsAddress"></span><br/>
+			</div>
+		</div>
+	</nav>
+
+	<div id="alerts" class="alert alert-danger" onclick="alert(null);"
+		style="cursor: pointer; display: none;"></div>
+	<div id="infos" class="alert alert-success" onclick="info(null);"
+		style="cursor: pointer; display: none;"></div>
+
+	<div id="content">Enable javascript!</div>
+
+	<script type="text/javascript">
+		$(window).ready(function() {
+			
+			$.ajax( {
+				
+				method:'META',
+				url:'/status',
+				success:function( inData ) {
+					$('span#statusVersion').append( inData.version );		
+					$('span#statusHttpAddress').append( inData.http );		
+					$('span#statusHttpsAddress').append( inData.https );		
+					
+				}
+			} );
+			
+			$('#nav-restPost').click();
+		});
+	</script>
+
+</body>
+</html>
+

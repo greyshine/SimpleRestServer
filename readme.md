@@ -15,23 +15,27 @@ Inspired by theaw articles:
 
 <a name="Quickstart"></a>
 ## Quickstart
-* Have java installed. Call on terminal:  
-``java -version``  
-Did you see meaningful output?
-* Store the latest release:  
-TODO: reference to downoad:``curl -o ``
-* Start Server with filebased json storage:  
-``java -jar SimpleRestServices-\<Version>.jar -port.http 7777``
-* Call HTTP-Post to insert data:  
-``
-curl -X POST -D"{text:"some text"}" http://localhost:7777/testcollections 
-``
-* Call HTTP-List to get data:  
-``
-curl -X POST http://localhost:777/testcollections 
-``
-* 
+* Have java installed and call on terminal:  
 
+  ``java -version``  
+  
+  Did you see meaningful output?
+* Get the latest release:  
+
+  TODO: reference to downoad:``curl -o ``
+
+* Start Server with filebased json storage:  
+  
+  ``java -jar SimpleRestServices-<Version>.jar -port.http 7777``
+
+* Call HTTP-Post to insert data:  
+
+  ``curl -X POST -D"{text:"some text"}" http://localhost:7777/testcollections ``
+
+* Call HTTP-List to get data:  
+  
+  ``curl -X POST http://localhost:777/testcollections``
+  
 * stop service  
 TODO fill
 
@@ -72,8 +76,10 @@ TODO fill
  Setting a null value without defining the -d flag:
  ```curl -X PATCH -H"Content-Type: application/json" address/<collection>/<id>/<property>`` 
 
-## Collection inspectation
-* List Collections
+## Collections
+
+The name of a collection always ends with an 's'. This indicates the plural of having more than one entry in a collection.
+
 
 ##Http-Method META
 * Ping  
@@ -92,6 +98,7 @@ TODO fill
  
 * Logs
 
+ shows log files
 
 ## Assumptions made, Predefined things
 * property names of user json documents must never start with a $ or _

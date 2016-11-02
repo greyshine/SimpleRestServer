@@ -1,0 +1,56 @@
+<p>Please send me some photo greetings. After sending I will show you the other greetings here...</p>
+<button class="btn" id="snap">Send Photo</button><br/>
+<br/>
+<video id="video" width="640" height="480" autoplay style="border-radius:5px;"></video>
+<canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+<!-- taken from  -->
+<script type="text/javascript">
+
+$(window).ready( function() {
+	
+	// Grab elements, create settings, etc.
+	var canvas = document.getElementById("canvas"),
+		context = canvas.getContext("2d"),
+		video = document.getElementById("video"),
+		videoObj = { "video": true },
+		errBack = function(error) {
+			console.log("Video capture error: ", error.code); 
+		};
+
+	// Put video listeners into place
+	if(navigator.getUserMedia) { // Standard
+		navigator.getUserMedia(videoObj, function(stream) {
+			video.src = stream;
+			video.play();
+		}, errBack);
+	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+		navigator.webkitGetUserMedia(videoObj, function(stream){
+			video.src = window.webkitURL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	}
+	else if(navigator.mozGetUserMedia) { // Firefox-prefixed
+		navigator.mozGetUserMedia(videoObj, function(stream){
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+		}, errBack);
+	} else {
+		alert('no camera detected.');
+	}
+	
+	$('#snap').click(function() {
+		context.drawImage(video, 0, 0, 640, 480);
+		$( '#video' ).hide();
+		$( '#canvas' ).show();
+		
+		var dataURL = canvas.toDataURL();
+		
+		// todo create 
+		
+		
+	});
+	
+});
+</script>
+<p>code from <a href="https://davidwalsh.name/browser-camera" target="_blank">davidwalsh.name/browser-camera</a></p>

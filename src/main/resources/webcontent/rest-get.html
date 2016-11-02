@@ -1,0 +1,24 @@
+<form class="form" onsubmit="app.get.submitForm(this); return false;">
+	<div class="form-group">
+		<input type="text" class="form-control" id="restGetCollection" placeholder="collection">
+	</div>
+	<div class="form-group">
+		<input type="text" class="form-control" id="restGetId" placeholder="id (optional)">
+	</div>
+	<div class="form-group">
+		<label><input type="checkbox" id="restGetEmbed"> embed</label>
+	</div>
+	<div class="form-group form-inline">
+		<input type="text" class="form-control" id="restGetOffset" placeholder="offset" size="2">
+		<input type="text" class="form-control" id="restGetLength" placeholder="length" size="2">
+	</div>
+	<div class="form-group">
+		<input type="text" class="form-control" id="restGetOrderings" placeholder="ordering (comma separated)">
+		<span id="restGetOrderings-helpBlock" class="help-block">e.g.: -property1,+property2,property3<br/>+ is ascending, - is descending, nutn is as +</span>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-default">GET</button>
+	</div>
+</form>
+<hr/>
+<textarea id="restGetResult" class="form-control" rows="10" placeholder="result json"></textarea>

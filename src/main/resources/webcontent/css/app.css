@@ -1,0 +1,9 @@
+div#status textarea {
+	width: 90%;
+	height: 500px;
+}
+
+label {
+	font-weight: normal;
+}
+

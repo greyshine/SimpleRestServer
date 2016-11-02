@@ -1,0 +1,15 @@
+{
+
+	hallo:"welt",
+	boolean:false,
+	number:-4711.1234
+	array: [
+		1,
+		"a",
+		12,
+		null,
+		[ 2 , true ],
+		{ x:"y" }
+	],
+	object: { x:"y" },
+}
