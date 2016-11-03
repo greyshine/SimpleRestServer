@@ -24,14 +24,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import de.greyshine.restservices.Constants;
-import de.greyshine.restservices.IBinaryStorageService;
 import de.greyshine.restservices.IJsonStorageService;
-import de.greyshine.restservices.IJsonStorageService.EHandleResult;
-import de.greyshine.restservices.IJsonStorageService.FindResult;
 import de.greyshine.restservices.util.JsonUtils;
-import de.greyshine.restservices.util.ResponseUtils;
 import de.greyshine.restservices.util.Utils;
-import de.greyshine.restservices.util.Wrapper;
+import de.greyshine.restservices.util.Utils.Wrapper;
 
 public class JsonFileStorage implements IJsonStorageService {
 	
@@ -39,15 +35,11 @@ public class JsonFileStorage implements IJsonStorageService {
 
 	private File collectionsDir;
 	
-	private IServiceProvider serviceProvider;
-	
 	@Override
-	public void init(IServiceProvider inServiceProvider, File inBasepath, String[] inArgs) {
+	public void init(File inBasepath, String[] inArgs) {
 		
 		collectionsDir = new File( inBasepath, "data/collections" );
 		collectionsDir.mkdirs();
-		
-		serviceProvider = inServiceProvider;
 	}
 
 	@Override

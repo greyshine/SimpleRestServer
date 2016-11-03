@@ -25,7 +25,7 @@ import de.greyshine.restservices.IJsonStorageService.FindResult;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
 import de.greyshine.restservices.IJsonStorageService.IResultHandler;
 import de.greyshine.restservices.RequestContext;
-import de.greyshine.restservices.util.ResponseUtils;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Utils;
 
 @Path("/")
@@ -46,7 +46,7 @@ public class GetHandler extends AbstractHandler {
 		final boolean isEmbed = requestInfo.isEmbed();
 		final boolean isEnvelope = requestInfo.isEnvelope();
 
-		final IJsonStorageService theJss = application.getServiceProvider().getDocumentStorageService(); 
+		final IJsonStorageService theJss = application.getDocumentStorageService(); 
 
 		theJss.find(inCollectionName,
 			
@@ -105,16 +105,16 @@ public class GetHandler extends AbstractHandler {
 
 		final String theIfNoneMatch = Utils.trimToEmpty(request.getHeader("If-None-Match"));
 		
-		final IDocument theInfo = application.getServiceProvider().getDocumentStorageService().read(inCollectionName, inId);
+		final IDocument theInfo = application.getDocumentStorageService().read(inCollectionName, inId);
 		
 		if (theInfo.isExceptional()) {
 
 			LOG.error(theInfo.getException());
-			return ResponseUtils.respond500ServerError();
+			return HtmlUtils.respond500ServerError();
 
 		} else if (theInfo.isNotFound()) {
 
-			return ResponseUtils.respond404NotFound();
+			return HtmlUtils.respond404NotFound();
 		}
 
 		boolean isMatchEtag = Utils.isNotBlank( theInfo.getEtag() ) && requestInfo.isHeaderValue( "If-None-Match", theInfo.getEtag() );
@@ -123,11 +123,11 @@ public class GetHandler extends AbstractHandler {
 
 		if (theInfo.isFound() && (isMatchEtag || isMatchIfNoneMatch)) {
 
-			return ResponseUtils.respond304NotModified(theInfo);
+			return HtmlUtils.respond304NotModified(theInfo);
 		}
 
 		final ResponseBuilder theRb = Response.ok();
-		ResponseUtils.decorate(theRb, theInfo, true);
+		HtmlUtils.decorate(theRb, theInfo, true);
 
 		return theRb.build();
 

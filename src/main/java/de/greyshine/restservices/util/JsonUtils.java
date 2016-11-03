@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.eclipse.persistence.sessions.serializers.JavaSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -43,6 +44,23 @@ public abstract class JsonUtils {
 		} finally {
 
 			IOUtils.closeQuietly(theIs);
+		}
+	}
+	
+	public static JsonObject readJsonObject(File inJsonFile) throws IOException {
+		
+		return readJson( inJsonFile ).getAsJsonObject();
+	}
+	
+	public static JsonObject readJsonObjectSafe(File aFile) {
+		
+		try {
+			
+			return readJson(aFile).getAsJsonObject();
+			
+		} catch( Exception e ) {
+			// swallow
+			return null;
 		}
 	}
 
@@ -375,5 +393,6 @@ public abstract class JsonUtils {
 				.put("id", inId)//
 				.build();
 	}
+
 	
 }

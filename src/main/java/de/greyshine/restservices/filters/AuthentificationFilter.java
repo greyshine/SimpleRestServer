@@ -11,9 +11,9 @@ import javax.ws.rs.ext.Provider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.greyshine.restservices.HttpHeader;
 import de.greyshine.restservices.IConfiguration;
 import de.greyshine.restservices.RequestContext;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Utils;
 import de.greyshine.restservices.util.Utils.Kvp;
 
@@ -28,7 +28,7 @@ public class AuthentificationFilter implements ContainerRequestFilter {
 		
 		if ( !isPass() ) {
 			
-			requestContext.abortWith( Response.status( Status.UNAUTHORIZED ).header(HttpHeader.WWW_AUTHENTICATE, "BASIC realm=\"\"").build() );
+			requestContext.abortWith( Response.status( Status.UNAUTHORIZED ).header(HtmlUtils.HEADER_WWW_AUTHENTICATE, "BASIC realm=\"\"").build() );
 			return;
 		}
 	}
@@ -43,7 +43,7 @@ public class AuthentificationFilter implements ContainerRequestFilter {
 		if ( theUc == null ) { return true; }
 		else if ( theRc.isUserInSession() ) { return true; }
 		
-		final Utils.Kvp<String,String> theUserAndPassword = Utils.evaluateUserPassword( theRc.getHttpServletRequest() );
+		final Utils.Kvp<String,String> theUserAndPassword = HtmlUtils.evaluateUserPassword( theRc.getHttpServletRequest() );
 		
 		final boolean isCorrectUser = Utils.isEquals( theUc.key, theUserAndPassword.key  ); 
 		final boolean isCorrectPassword = Utils.isEquals( theUc.value, theUserAndPassword.value );
@@ -56,8 +56,12 @@ public class AuthentificationFilter implements ContainerRequestFilter {
 		
 		// ok i dunno understand that: principal and subject ...
 		// i am used to logins, passwords and roles
+		
+		if ( Utils.isNotBlank( theUserAndPassword.key ) || Utils.isNotBlank( theUserAndPassword.value ) ) {
+			
+			LOG.info( "bad login attempt: "+ theUserAndPassword +"; "+ theRc.createStatusReport() );
+		}
 
-		LOG.info( "bad login attempt: "+ theUserAndPassword +"; "+ theRc.createStatusReport() );
 		
 		return false;
 	}

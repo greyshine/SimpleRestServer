@@ -21,9 +21,9 @@ import com.google.gson.JsonElement;
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IJsonStorageService;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Job;
 import de.greyshine.restservices.util.JsonUtils;
-import de.greyshine.restservices.util.ResponseUtils;
 
 @Path("/")
 public class PutHandler extends AbstractHandler {
@@ -52,7 +52,7 @@ public class PutHandler extends AbstractHandler {
 
 		if ( theItem.isNotFound() ) {
 
-			return ResponseUtils.respond404NotFound();
+			return HtmlUtils.respond404NotFound();
 		}
 
 		try {
@@ -73,7 +73,7 @@ public class PutHandler extends AbstractHandler {
 
 		LOG.debug("PUT " + inId);
 
-		return ResponseUtils.returnDocumentResponse(inId, inCollectionName);
+		return HtmlUtils.returnDocumentResponse(inId, inCollectionName);
 	}
 
 

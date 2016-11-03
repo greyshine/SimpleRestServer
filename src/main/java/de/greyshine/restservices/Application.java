@@ -22,9 +22,9 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import de.greyshine.restservices.filebased.BinaryFileStorage;
-import de.greyshine.restservices.filebased.IServiceProvider;
 import de.greyshine.restservices.filebased.JsonFileStorage;
 import de.greyshine.restservices.filters.AuthentificationFilter;
 import de.greyshine.restservices.filters.GzipFilter;
@@ -52,7 +52,8 @@ public abstract class Application implements IStatusReportable {
 
 	private final long starttime = System.currentTimeMillis();
 
-	private IServiceProvider serviceProvider;
+	private IBinaryStorageService binaryStorageService;
+	private IJsonStorageService jsonStorageService;
 	
 	private String httpAddress;
 	private Integer httpPort;
@@ -63,12 +64,16 @@ public abstract class Application implements IStatusReportable {
 		return basepath;
 	}
 	
-	public String createUniqueId() {
-		return ZonedDateTime.now().format( Utils.DF_LEX )+"-"+ UUID.randomUUID().toString();
+	public IBinaryStorageService getBinaryStorageService() {
+		return binaryStorageService;
 	}
 	
-	public IServiceProvider getServiceProvider() {
-		return serviceProvider;
+	public IJsonStorageService getDocumentStorageService() {
+		return jsonStorageService;
+	}
+	
+	public String createUniqueId() {
+		return ZonedDateTime.now().format( Utils.DF_LEX )+"-"+ UUID.randomUUID().toString();
 	}
 
 	public final Collection<Class<?>> getHandlerClasses() {
@@ -127,19 +132,16 @@ public abstract class Application implements IStatusReportable {
 		theJob.put( "https" , getHttpsAddress() );
 		
 		try {
-			final IBinaryStorageService theBss = serviceProvider.getBinaryStorageService();
-			theJob.put( IBinaryStorageService.class.getCanonicalName(), theBss instanceof IStatusReportable ? ( (IStatusReportable)theBss ).createStatusReport() : null );	
+			theJob.put( IBinaryStorageService.class.getCanonicalName(), binaryStorageService instanceof IStatusReportable ? ( (IStatusReportable)binaryStorageService ).createStatusReport() : new JsonPrimitive( binaryStorageService.toString() ) );	
 		} catch (Exception e) {
 			theJob.put( IBinaryStorageService.class.getCanonicalName(), JsonUtils.toJsonObject(e) );
 		}
 
 		try {
-			final IJsonStorageService theDss = serviceProvider.getDocumentStorageService();
-			theJob.put( IJsonStorageService.class.getCanonicalName(), theDss instanceof IStatusReportable ? ( (IStatusReportable)theDss ).createStatusReport() : null );	
+			theJob.put( IJsonStorageService.class.getCanonicalName(), jsonStorageService instanceof IStatusReportable ? ( (IStatusReportable)jsonStorageService ).createStatusReport() : new JsonPrimitive( jsonStorageService.toString() ) );	
 		} catch (Exception e) {
 			theJob.put( IJsonStorageService.class.getCanonicalName(), JsonUtils.toJsonObject(e) );
 		}
-		
 		
 		return theJob.build();
 	}
@@ -160,35 +162,18 @@ public abstract class Application implements IStatusReportable {
 		httpsPort = inHttpsPort;
 		httpsAddress = httpsPort == null ? null : "https://"+ theWebAddress +":"+ httpsPort;
 
-		// get storage device from
-		if ( httpAddress != null ) { LOG.info( "http.webaddress="+ httpAddress ); }
-		if ( httpsAddress != null ) { LOG.info( "https.webaddress="+ httpsAddress ); }
-		
-		serviceProvider = initServices(inBasepath, inArgs);
+		initServices(inBasepath, inArgs);
 		
 		init(basepath, inArgs);
 	}
 
-	private IServiceProvider initServices(File inBasepath, String... inArgs) throws Exception {
+	private void initServices(File inBasepath, String... inArgs) throws Exception {
 		
 		final Class<? extends IBinaryStorageService> theBinaryStorageClass = Utils.defaultIfNull( getBinaryStorageServiceClass(), BinaryFileStorage.class);
-		final IBinaryStorageService theBss = theBinaryStorageClass.newInstance();
+		binaryStorageService = theBinaryStorageClass.newInstance();
 		
 		final Class<? extends IJsonStorageService> theStorageClass = Utils.defaultIfNull( getJsonStorageServiceClass(), JsonFileStorage.class);
-		final IJsonStorageService theDss = theStorageClass.newInstance(); 
-		
-		return new IServiceProvider() {
-			
-			@Override
-			public IJsonStorageService getDocumentStorageService() {
-				return theDss;
-			}
-			
-			@Override
-			public IBinaryStorageService getBinaryStorageService() {
-				return theBss;
-			}
-		};
+		jsonStorageService = theStorageClass.newInstance(); 
 	}
 
 	private Class<? extends IJsonStorageService> getJsonStorageServiceClass() {
@@ -201,8 +186,8 @@ public abstract class Application implements IStatusReportable {
 
 	public void init(File inBasepath, String[] inArgs) {
 		
-		getServiceProvider().getBinaryStorageService().init( serviceProvider, inBasepath, inArgs);
-		getServiceProvider().getDocumentStorageService().init(serviceProvider, inBasepath, inArgs);
+		binaryStorageService.init(inBasepath, inArgs);
+		jsonStorageService.init(inBasepath, inArgs);
 	}
 
 	public void destroy() {
@@ -241,12 +226,15 @@ public abstract class Application implements IStatusReportable {
 	}
 
 	public static interface IServletFilterInfo {
+		
 		String getPath();
 
 		Filter getFilter();
 
 		EnumSet<DispatcherType> getDispatcherTypes();
 	}
+	
+	public void shutdown() {}
 	
 	@Override
 	public String toString() {

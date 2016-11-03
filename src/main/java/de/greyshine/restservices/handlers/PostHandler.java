@@ -21,9 +21,9 @@ import com.google.gson.JsonElement;
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IJsonStorageService;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Job;
 import de.greyshine.restservices.util.JsonUtils;
-import de.greyshine.restservices.util.ResponseUtils;
 
 @Path("/")
 public class PostHandler extends AbstractHandler {
@@ -69,6 +69,6 @@ public class PostHandler extends AbstractHandler {
 
 		final boolean isVerbose = requestInfo.isVerbose();
 
-		return ResponseUtils.returnDocumentResponse(theInfo.getId(), inCollectionName);
+		return HtmlUtils.returnDocumentResponse(theInfo.getId(), inCollectionName);
 	}
 }

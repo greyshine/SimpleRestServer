@@ -17,9 +17,9 @@ import com.google.gson.JsonElement;
 
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Job;
 import de.greyshine.restservices.util.JsonUtils;
-import de.greyshine.restservices.util.ResponseUtils;
 
 @Path("/")
 public class DeleteHandler extends AbstractHandler {
@@ -38,16 +38,16 @@ public class DeleteHandler extends AbstractHandler {
 
 		try {
 
-			final IDocument theInfo = application.getServiceProvider().getDocumentStorageService().delete(inCollectionName, inId);
+			final IDocument theInfo = application.getDocumentStorageService().delete(inCollectionName, inId);
 			
 			if ( !theInfo.isExceptional() && theInfo.isNotFound() ) {
 			
 			} else if ( theInfo.isExceptional() && theInfo.isFound() ) {
 				
-				return ResponseUtils.respond500ServerError();
+				return HtmlUtils.respond500ServerError();
 			}
 			
-			return ResponseUtils.respond204NoContent();
+			return HtmlUtils.respond204NoContent();
 
 		} catch (Exception e) {
 

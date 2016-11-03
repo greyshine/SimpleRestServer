@@ -132,6 +132,7 @@ TODO: connect rhino/nashorn
 ## Known issues and TODOs
 * Make reading inputstream entity from request check on amount bytes read in order to prevent big data sending
 * Implement reading Json by direct json formal check in order to prevent bad json upload.
+* Copy a default log4j.xml on pure startup into the basedir
 No issues known yet.  
 But please do report them.
 

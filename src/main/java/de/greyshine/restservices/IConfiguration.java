@@ -30,9 +30,12 @@ public interface IConfiguration {
 	@MainArg( value="-path [file]", isMandatory=false, description="relative path to the home dir of the application.\nIf none set the calling path will be used as homepath." )
 	File getBasepath();
 
+	@MainArg( value="-keystore [file]", isMandatory=false, description="Keystorefile. See http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html" )
 	File getKeystoreFile();
 	
+	@MainArg( value="-pwd.keystore [password]", isMandatory=false, description="Keystorefile. See http://www.eclipse.org/jetty/documentation/current/configuring-ssl.html" )
 	String getKeystorePassword();
+	@MainArg( value="pwd.keymanager [password]", isMandatory=false, description="defaults to the -pwd.keystore" )
 	String getKeymanagerPassword();
 	
 	boolean isWebAdminEnabled();

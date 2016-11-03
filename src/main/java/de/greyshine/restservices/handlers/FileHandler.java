@@ -14,8 +14,8 @@ import javax.ws.rs.core.Response;
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IBinaryStorageService;
 import de.greyshine.restservices.IBinaryStorageService.IBinary;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Job;
-import de.greyshine.restservices.util.ResponseUtils;
 
 @Path("/")
 public class FileHandler extends AbstractHandler {
@@ -25,17 +25,17 @@ public class FileHandler extends AbstractHandler {
 	@Path("/file")
 	public Response upload() throws IOException {
 		
-		final IBinaryStorageService theBss = application.getServiceProvider().getBinaryStorageService();
+		final IBinaryStorageService theBss = application.getBinaryStorageService();
 		
 		final IBinary theBinary = theBss.create( getRequestEntityStream() );
 		
 		if ( !theBinary.isExceptional() ) {
 			
-			return ResponseUtils.respond200Ok( Job.buildAsObject("id", theBinary.getId()) );	
+			return HtmlUtils.respond200Ok( Job.buildAsObject("id", theBinary.getId()) );	
 		
 		} else {
 			
-			return ResponseUtils.respond500ServerError();	
+			return HtmlUtils.respond500ServerError();	
 		}
 	}
 	
@@ -45,16 +45,16 @@ public class FileHandler extends AbstractHandler {
 			+ Constants.REGEX_COLLECTION_ITEM_ID + "}")
 	public Response put(@PathParam("collection") String inCollectionName, @PathParam("id") String inId) throws IOException {
 		
-		final IBinaryStorageService theBss = application.getServiceProvider().getBinaryStorageService();
+		final IBinaryStorageService theBss = application.getBinaryStorageService();
 		final IBinary theBinary = theBss.update(inId, getRequestEntityStream() );
 		
 		if ( !theBinary.isExceptional() ) {
 			
-			return ResponseUtils.respond200Ok( Job.buildAsObject("id", theBinary.getId()) );	
+			return HtmlUtils.respond200Ok( Job.buildAsObject("id", theBinary.getId()) );	
 		
 		} else {
 			
-			return ResponseUtils.respond500ServerError();	
+			return HtmlUtils.respond500ServerError();	
 		}
 	}
 	
@@ -66,11 +66,11 @@ public class FileHandler extends AbstractHandler {
 		
 		if ( theBinary.isExceptional() ) {
 			
-			return ResponseUtils.respond500ServerError();
+			return HtmlUtils.respond500ServerError();
 		}
 		else if ( theBinary.isNotFound() ) {
 			
-			return ResponseUtils.respond404NotFound();
+			return HtmlUtils.respond404NotFound();
 		}
 		
 		return Response//
@@ -89,14 +89,14 @@ public class FileHandler extends AbstractHandler {
 		
 		if ( theBinary.isExceptional() ) {
 			
-			return ResponseUtils.respond500ServerError();
+			return HtmlUtils.respond500ServerError();
 		}
 		else if ( !theBinary.isFound() ) {
 			
-			return ResponseUtils.respond404NotFound();
+			return HtmlUtils.respond404NotFound();
 		}
 		
-		return ResponseUtils.respond200Ok();
+		return HtmlUtils.respond200Ok();
 	}
 
 }

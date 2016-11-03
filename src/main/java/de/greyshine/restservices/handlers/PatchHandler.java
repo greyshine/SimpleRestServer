@@ -23,8 +23,8 @@ import com.google.gson.JsonObject;
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IBinaryStorageService.IBinary;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.JsonUtils;
-import de.greyshine.restservices.util.ResponseUtils;
 import de.greyshine.restservices.util.Utils;
 
 @Path("/")
@@ -46,14 +46,14 @@ public class PatchHandler extends AbstractHandler {
 			@PathParam("property") String inProperty) throws IOException {
 
 		if ( Utils.isBlank( inProperty ) ) {
-			return ResponseUtils.respond400BadRequest();
+			return HtmlUtils.respond400BadRequest();
 		}
 		
 		final IDocument theItem = getJsonStorageService().read(inCollectionName, inId);
 
 		if ( theItem.getException() != null ) {
 			
-			return ResponseUtils.respond500ServerError(  );
+			return HtmlUtils.respond500ServerError(  );
 		
 		} else if (theItem.isNotFound()) {
 
@@ -83,7 +83,7 @@ public class PatchHandler extends AbstractHandler {
 		
 		} else if ( !theDataJsonElement.isJsonObject() ) {
 			
-			return ResponseUtils.respond400BadRequest( "document is no json-object" );
+			return HtmlUtils.respond400BadRequest( "document is no json-object" );
 		}
 		
 		final JsonObject theDataJsonObject = theDataJsonElement.getAsJsonObject();
@@ -101,7 +101,7 @@ public class PatchHandler extends AbstractHandler {
 		
 		inItem = getJsonStorageService().update( inItem.getCollection() , inItem.getId(), theDataJsonObject);
 		
-		return !inItem.isExceptional() ? ResponseUtils.respond200Ok( inItem, requestInfo.isVerbose() ) : ResponseUtils.respond500ServerError( inItem.getException() );
+		return !inItem.isExceptional() ? HtmlUtils.respond200Ok( inItem, requestInfo.isVerbose() ) : HtmlUtils.respond500ServerError( inItem.getException() );
 	}
 
 	private Response doPatchJsonValue(IDocument inDocument, String inCollectionName, String inId, String inProperty)
@@ -142,11 +142,11 @@ public class PatchHandler extends AbstractHandler {
 
 		if (!changed) {
 
-			return ResponseUtils.respond304NotModified();
+			return HtmlUtils.respond304NotModified();
 
 		} else {
 			
-			return ResponseUtils.streamResponse( inDocument );
+			return HtmlUtils.streamResponse( inDocument );
 		}
 
 	}

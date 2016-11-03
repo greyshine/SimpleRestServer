@@ -7,13 +7,40 @@ public class Spielwiese {
 
 	public static void main(String[] args) {
 
-		String s = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	
+		
+		System.out.println( new B() {
+
+			{
+				System.out.println( "1 "+ getS() );
+				System.out.println( "2 "+super.getS() );
+			}
+			
+			@Override
+			public String getS() {
+				return "OVER";
+			}
+			
+		} );
 		
 		
 		
 		
 	}
+	
+	static class B {
+		
+		String s = "BWelt";
+		
+		public B() {
+			
+			System.out.println( "A "+ getS() );
+			System.out.println( "B "+ getS() );
+		}
+
+		public String getS() {
+			return s;
+		}
+	} 
 	
 	public  static void daysLeft() {
 		

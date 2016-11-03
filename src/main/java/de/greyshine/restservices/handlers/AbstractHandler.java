@@ -18,11 +18,13 @@ import de.greyshine.restservices.IJsonStorageService;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
 import de.greyshine.restservices.RequestContext;
 import de.greyshine.restservices.RequestInfo;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.JsonUtils;
 import de.greyshine.restservices.util.Utils;
 
 public abstract class AbstractHandler {
 	
+	@SuppressWarnings("unused")
 	private static final Log LOG = LogFactory.getLog( AbstractHandler.class );
 
 	protected Application application;
@@ -51,18 +53,18 @@ public abstract class AbstractHandler {
 		
 		requestInfo = new RequestInfo(inRequest);
 
-		final String contentType = request.getHeader(Utils.HEADER_CONTENT_TYPE);
+		final String contentType = request.getHeader(HtmlUtils.HEADER_CONTENT_TYPE);
 
 		isJsonContentTypeRequest = contentType != null && ("application/json".equalsIgnoreCase(contentType)
 				|| contentType.toLowerCase().startsWith("application/json;"));
 	}
 	
 	public IJsonStorageService getJsonStorageService() {
-		return application.getServiceProvider().getDocumentStorageService();
+		return application.getDocumentStorageService();
 	}
 	
 	public IBinaryStorageService getBinaryStorageService() {
-		return application.getServiceProvider().getBinaryStorageService();
+		return application.getBinaryStorageService();
 	}
 	
 	public void throwExceptionOnFailure(IDocument inInfo) {

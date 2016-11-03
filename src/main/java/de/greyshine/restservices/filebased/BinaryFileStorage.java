@@ -7,14 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZonedDateTime;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -24,7 +22,7 @@ import de.greyshine.restservices.IBinaryStorageService;
 import de.greyshine.restservices.IStatusReportable;
 import de.greyshine.restservices.util.Job;
 import de.greyshine.restservices.util.Utils;
-import de.greyshine.restservices.util.Wrapper;
+import de.greyshine.restservices.util.Utils.Wrapper;
 
 public class BinaryFileStorage implements IBinaryStorageService, IStatusReportable {
 	
@@ -32,13 +30,11 @@ public class BinaryFileStorage implements IBinaryStorageService, IStatusReportab
 	
 	protected File basepath;
 	private File binaryDir;
-	protected IServiceProvider serviceProvider;
 
 	@Override
-	public void init(IServiceProvider inServiceProvider, File inBasepath, String[] inArgs) {
+	public void init(File inBasepath, String[] inArgs) {
 		
 		this.basepath = inBasepath;
-		this.serviceProvider = inServiceProvider;
 		
 		binaryDir = new File(basepath, "data/files");
 		binaryDir.mkdirs();

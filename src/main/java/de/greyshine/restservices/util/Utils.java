@@ -21,7 +21,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +32,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.xml.DOMConfigurator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -41,9 +42,6 @@ public abstract class Utils {
 
 	private final static Log LOG = LogFactory.getLog(Utils.class);
 	
-	public static final String HEADER_X_Total_Count = "X-Total-Count";
-	public static final String HEADER_CONTENT_TYPE = "Content-Type";
-
 	public static final int EOF_STREAM = -1;
 
 	public static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
@@ -51,7 +49,8 @@ public abstract class Utils {
 	public static final ZoneId ZONEID_GMT = ZoneId.of("GMT");
 
 	public static final JsonParser JSONPARSER = new JsonParser();
-
+	public static final Gson JSONPRINTER = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+	
 	
 	public static final int KB_IN_BYTES = 1024;
 	public static final int MB_IN_BYTES = 1024 * KB_IN_BYTES;
@@ -192,6 +191,20 @@ public abstract class Utils {
 		}
 	}
 
+	public static boolean copySafe(InputStream inInputStream, OutputStream inOutputStream, boolean inCloseIs,
+			boolean inCloseOs) {
+		
+		try {
+			
+			copy(inInputStream, inOutputStream, inCloseIs, inCloseOs);
+			
+		} catch (Exception e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 	public static long copy(InputStream inInputStream, OutputStream inOutputStream, boolean inCloseIs,
 			boolean inCloseOs) throws IOException {
 
@@ -471,6 +484,10 @@ public abstract class Utils {
 		return ZonedDateTime.now(ZONEID_GMT);
 	}
 
+	public static File getCanonicalFileSafe(File inFile) {
+		return getCanonicalFileSafe(inFile, true);
+	}
+	
 	public static File getCanonicalFileSafe(File inFile, boolean inReturnAbsoluteInstead) {
 
 		try {
@@ -645,30 +662,13 @@ public abstract class Utils {
 		if ( o instanceof Throwable ) {
 			
 			o = o.getClass().getCanonicalName()+" [message="+ ((Throwable)o).getMessage() +"]";			
-		}
 		
+		} else if ( o instanceof JsonElement ) {
+			
+			return JSONPRINTER.toJson( o );
+		}
 		
 		return String.valueOf( o );
-	}
-	
-	public static Kvp<String,String> evaluateUserPassword(HttpServletRequest inReq) {
-	
-		String theAuthorisationHeader = inReq.getHeader("Authorization");
-		
-		if (theAuthorisationHeader == null || !theAuthorisationHeader.toUpperCase().startsWith("BASIC ")) {
-			return new Kvp<String,String>();
-		}
-		
-		String theUserAndPassword = inReq.getHeader("Authorization").substring(5).trim();
-		theUserAndPassword = new String(java.util.Base64.getDecoder().decode(theUserAndPassword));
-		final int idxColon = theUserAndPassword.indexOf(':');
-
-		final String theUserCandidate = idxColon < 1 ? null
-				: trimToNull(theUserAndPassword.substring(0, idxColon));
-		final String thePassword = theUserCandidate == null ? null
-				: trimToEmpty(theUserAndPassword.substring(idxColon+1));
-		
-		return new Kvp<String,String>( theUserCandidate, thePassword );
 	}
 	
 	public static class Kvp<T,S> {
@@ -686,8 +686,54 @@ public abstract class Utils {
 		}
 	}
 	
-	
-	
+	public static class Wrapper<T> {
 
+		public T value;
+		
+		public Wrapper() {
+			
+		}
+		public Wrapper(T v) {
+			value=v;
+		}
+		
+		@Override
+		public String toString() {
+			return String.valueOf( value );
+		}
+	}
+
+	public static InputStream getResource(String inResource) {
+		
+		try {
+			
+			return Thread.currentThread().getContextClassLoader().getResourceAsStream( inResource );
+			
+		} catch (Exception e) {
+			// swallow
+		}
+		
+		return null;
+	}
+
+	public static boolean isFile(File inFile) {
+		return inFile != null && inFile.isFile();
+	}
+
+	public static boolean isDirectory(File inFile) {
+		return inFile != null && inFile.isDirectory();
+	}
+
+	public static File toCanonicalFileSafe(File inFile) {
+		
+		try {
+			
+			return inFile.getCanonicalFile();
+			
+		} catch (Exception e) {
+			
+			return inFile;
+		}
+	}
 
 }

@@ -1,7 +1,6 @@
 package de.greyshine.restservices.filters;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.container.ContainerRequestContext;
@@ -14,9 +13,8 @@ import javax.ws.rs.ext.Provider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import de.greyshine.restservices.HttpHeader;
 import de.greyshine.restservices.interceptors.GzipInterceptor;
-import de.greyshine.restservices.util.Utils;
+import de.greyshine.restservices.util.HtmlUtils;
 
 @Provider
 public class GzipFilter implements ContainerRequestFilter, ContainerResponseFilter {
@@ -45,7 +43,7 @@ public class GzipFilter implements ContainerRequestFilter, ContainerResponseFilt
 
 	private boolean isAcceptEncodingGzip(MultivaluedMap<String, String> headers) {
 		
-		final List<String> theHeaders = headers.get( HttpHeader.ACCEPT_ENCODING ); 
+		final List<String> theHeaders = headers.get( HtmlUtils.HEADER_ACCEPT_ENCODING ); 
 		
 		if ( theHeaders == null ) { return false; }
 		
@@ -70,7 +68,7 @@ public class GzipFilter implements ContainerRequestFilter, ContainerResponseFilt
 		
 		if ( isGzipEncoding && didYouSolveTheBug ) {
 		
-			responseContext.getHeaders().add( HttpHeader.CONTENT_ENCODING , "gzip");
+			responseContext.getHeaders().add( HtmlUtils.HEADER_CONTENT_ENCODING , "gzip");
 		} 
 		
 		if ( isGzipEncoding && !didYouSolveTheBug) {

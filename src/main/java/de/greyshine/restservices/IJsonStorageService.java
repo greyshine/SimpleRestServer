@@ -7,12 +7,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
-import de.greyshine.restservices.filebased.IServiceProvider;
-import de.greyshine.restservices.util.Utils;
 
 /**
  * bridge for accessing the backend and its documents and files 
@@ -28,7 +24,7 @@ public interface IJsonStorageService extends IStatusReportable {
 		JSON_TEXT
 	}
 	
-	void init(IServiceProvider inServiceProvider, File inBasepath, String[] inArgs);
+	void init(File inBasepath, String[] inArgs);
 	void destroy();
 	
 	/**

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>de.greyshine.restservices</groupId>
-	<artifactId>RestServices</artifactId>
+	<artifactId>SimpleRestServer</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
 	<properties>
@@ -27,9 +27,13 @@
 				</configuration>
 			</plugin>
 
-			<!-- Lets address standalone Jetty development first <plugin> <groupId>org.apache.maven.plugins</groupId> 
-				<artifactId>maven-war-plugin</artifactId> <version>2.6</version> <configuration> 
-				<failOnMissingWebXml>false</failOnMissingWebXml> </configuration> </plugin> -->
+			<!-- Lets address standalone Jetty development first -->
+			<!--<plugin>
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration><failOnMissingWebXml>false</failOnMissingWebXml> </configuration>
+			</plugin> -->
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -62,9 +66,6 @@
 
 				</configuration>
 			</plugin>
-
-
-
 		</plugins>
 
 		<resources>

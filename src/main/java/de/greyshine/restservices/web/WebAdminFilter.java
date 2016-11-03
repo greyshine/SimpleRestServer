@@ -16,11 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.jetty.http.HttpHeader;
 
 import de.greyshine.restservices.Application;
-import de.greyshine.restservices.HttpHeader;
 import de.greyshine.restservices.IConfiguration;
 import de.greyshine.restservices.RequestContext;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.Utils;
 
 public class WebAdminFilter implements Filter {
@@ -90,7 +91,7 @@ public class WebAdminFilter implements Filter {
 		}
 		
 		
-		final Utils.Kvp<String,String> theUserAndPassword = Utils.evaluateUserPassword(inReq);
+		final Utils.Kvp<String,String> theUserAndPassword = HtmlUtils.evaluateUserPassword(inReq);
 		
 		final boolean isCorrectUser = Utils.isEquals( theUc.key, theUserAndPassword.key  ); 
 		final boolean isCorrectPassword = Utils.isEquals( theUc.value, theUserAndPassword.value );
@@ -102,7 +103,7 @@ public class WebAdminFilter implements Filter {
 		}
 		
 		inRes.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		inRes.setHeader(HttpHeader.WWW_AUTHENTICATE, "BASIC realm=\"\"");
+		inRes.setHeader(HtmlUtils.HEADER_WWW_AUTHENTICATE, "BASIC realm=\"\"");
 		return false;
 	}
 

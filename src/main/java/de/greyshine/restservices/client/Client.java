@@ -52,8 +52,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
-import de.greyshine.restservices.HttpHeader;
 import de.greyshine.restservices.Method;
+import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.JsonUtils;
 import de.greyshine.restservices.util.Utils;
 
@@ -464,10 +464,10 @@ public class Client {
 		}
 
 		public String getContentType() {
-			return getHeader( HttpHeader.CONTENT_TYPE );
+			return getHeader( HtmlUtils.HEADER_CONTENT_TYPE );
 		}
 		public String getContentEncoding() {
-			return getHeader( HttpHeader.CONTENT_ENCODING );
+			return getHeader( HtmlUtils.HEADER_CONTENT_ENCODING );
 		}
 		
 		public List<String> getHeaders(String inHeaderName) {

@@ -1,0 +1,7 @@
+{
+	"path":"target/home-test-dev-application",
+	"port.https": 7778,
+	"keystore":"src/test/https-keystore/keystore",		
+	"pwd.keystore":"jetty9",		
+	"pwd.keymanager":null	
+}

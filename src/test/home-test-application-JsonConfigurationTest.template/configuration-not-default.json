@@ -1,0 +1,5 @@
+{
+	"path":"target/home-test-application-JsonConfigurationTest",
+	"port.http":7778,
+	"port.https":7779,
+}
