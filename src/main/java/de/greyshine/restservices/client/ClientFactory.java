@@ -1,16 +1,26 @@
 package de.greyshine.restservices.client;
 
+import com.google.gson.JsonElement;
+
 import de.greyshine.restservices.Method;
 import de.greyshine.restservices.RequestInfo;
+import de.greyshine.restservices.client.Client.Response;
 import de.greyshine.restservices.util.Utils;
 
 public class ClientFactory {
 	
 	private String address;
-	private boolean isVerbose = true;
+	private boolean isVerbose = false;
+	private String user, password;
 	
 	public ClientFactory(String inAddress) {
+		this(inAddress, null,null);
+	}
+	
+	public ClientFactory(String inAddress, String inUser, String inPassword) {
 		this.address = inAddress;
+		user = inUser;
+		password = Utils.defaultIfNull( inPassword , "");
 	}
 	
 	public Client create(String inUri) {
@@ -24,6 +34,11 @@ public class ClientFactory {
 		final String theAddress = inUri == null ? address : address+ inUri;
 		
 		final Client c = new Client(theAddress);
+		
+		if ( Utils.isNotBlank(user) ) {
+			
+			c.credentials(user, password);
+		}
 		
 		if ( isVerbose ) {
 			
@@ -57,5 +72,9 @@ public class ClientFactory {
 
 	public Client create(Method inMethod, String inUri) {
 		return create(inUri).method( inMethod );
+	}
+
+	public Response sendPost(String inCollection, JsonElement inJe) {
+		return createPost( inCollection ).headerContentTypeJson().setEntityParameter( inJe ).send();
 	}
 }

@@ -5,26 +5,41 @@
 
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
-		<param name="Threshold" value="ALL" />
+		<param name="Threshold" value="INFO" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-5p [%c:%L] %m%n" />
 		</layout>
 	</appender>
 	
-	<logger name="org.apache">
-		<level value="ERROR" />
-	</logger>
+	<appender name="logfile" class="org.apache.log4j.DailyRollingFileAppender">
+       <param name="Threshold" value="DEBUG" />
+       <param name="File" value="${logDir}/sirese.log" />
+       <param name="DatePattern" value="'.'yyyy-MM-dd" />
+       <layout class="org.apache.log4j.PatternLayout">
+          <param name="ConversionPattern" value="[%p] %d %c %M - %m%n"/>          
+       </layout>
+    </appender>
 	
-	<logger name="org.eclipse">
-		<level value="ERROR" />
+	<logger name="org.apache">
+		<level value="FATAL" />
 	</logger>
 
-	<logger name="de.greyshine">
-		<level value="INFO" />
+	<logger name="org.eclipse">
+		<level value="FATAL" />
+	</logger>
+	
+	<logger name="de.greyshine" >
+		<level value="DEBUG" />
+	</logger>
+	
+	<logger name="de.greyshine.utils" >
+		<level value="ERROR" />
 	</logger>
 	
 	<root>
+		<level value="DEBUG" />
 		<appender-ref ref="console" />
+		<appender-ref ref="logfile" />
 	</root>
 
 </log4j:configuration>

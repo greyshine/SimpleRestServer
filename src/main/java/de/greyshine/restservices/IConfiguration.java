@@ -38,7 +38,7 @@ public interface IConfiguration {
 	@MainArg( value="pwd.keymanager [password]", isMandatory=false, description="defaults to the -pwd.keystore" )
 	String getKeymanagerPassword();
 	
-	boolean isWebAdminEnabled();
+	boolean isWebAdministrationEnabled();
 
 	@MainArg( value="[fully qualified class]", isMandatory=false, description="As last argument provide the fully qulified class of the Application you want to run.\nThe class must extend de.greyshine.restservices.Application." )
 	Class<? extends Application> getApplicationClass();

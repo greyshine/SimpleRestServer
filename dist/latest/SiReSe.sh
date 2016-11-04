@@ -1,3 +1,3 @@
 #!/bin/sh 
 
-java -jar SiReSe-0.1-SNAPSHOT.jar -user admin:admin -webadmin -path $1
+java -jar SiReSe-0.2-SNAPSHOT.jar -user admin:admin -webadmin -path $1

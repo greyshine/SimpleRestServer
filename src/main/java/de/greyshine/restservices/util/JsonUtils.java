@@ -359,8 +359,6 @@ public abstract class JsonUtils {
 		boolean isRoot();
 	}
 
-
-
 	public static JsonElement toJsonArray(List<String> inValues) {
 		
 		final JsonArray theJa = new JsonArray();
@@ -393,6 +391,4 @@ public abstract class JsonUtils {
 				.put("id", inId)//
 				.build();
 	}
-
-	
 }

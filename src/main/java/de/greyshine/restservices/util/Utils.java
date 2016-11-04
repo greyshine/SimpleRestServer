@@ -21,7 +21,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.function.Function;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,6 +43,8 @@ import com.google.gson.JsonParser;
 public abstract class Utils {
 
 	private final static Log LOG = LogFactory.getLog(Utils.class);
+	
+	static public final Random RANDOM = new Random(  ); 
 	
 	public static final int EOF_STREAM = -1;
 
@@ -735,5 +739,27 @@ public abstract class Utils {
 			return inFile;
 		}
 	}
+
+	public static int getRandomInt(int inMax) {
+		return RANDOM.nextInt(inMax);
+	}
+	
+	public static int getRandomInt() {
+		return RANDOM.nextInt();
+	}
+
+	public static <T,S> S executeSafe(T inInputParameter, Function<T,S> inFunction) {
+		
+		try {
+			
+			return inFunction == null ? null : inFunction.apply(null);
+			
+		} catch (Exception e) {
+			LOG.debug( e, e );
+		}
+		return null;
+	}
+	
+	
 
 }

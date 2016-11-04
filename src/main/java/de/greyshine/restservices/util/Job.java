@@ -18,7 +18,7 @@ public class Job {
 	private static final Gson GSON_PRETTYPRINT = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	private static final Gson GSON = new GsonBuilder().disableHtmlEscaping().create();
 	
-	public final JsonObject j = new JsonObject();
+	public final JsonObject jsonObject = new JsonObject();
 	
 	public Job() {}
 	
@@ -27,31 +27,31 @@ public class Job {
 	}
 	
 	public Job put(String inProperty, String inValue) {
-		j.addProperty(inProperty, inValue);
+		jsonObject.addProperty(inProperty, inValue);
 		return this;
 	}
 	
 	public Job put(String inProperty, Number inValue) {
-		j.addProperty(inProperty, inValue);
+		jsonObject.addProperty(inProperty, inValue);
 		return this;
 	}
 	
 	public Job put(String inProperty, Boolean inValue) {
-		j.addProperty(inProperty, inValue);
+		jsonObject.addProperty(inProperty, inValue);
 		return this;
 	}
 	
 	public Job put(String inProperty, JsonElement inValue) {
-		j.add(inProperty, inValue);
+		jsonObject.add(inProperty, inValue);
 		return this;
 	}
 	
 	public JsonObject build() {
-		return j;
+		return jsonObject;
 	}
 	
 	public String buildAsString(boolean inPretty) {
-		return inPretty ? GSON_PRETTYPRINT.toJson( j ) : GSON.toJson( j );
+		return inPretty ? GSON_PRETTYPRINT.toJson( jsonObject ) : GSON.toJson( jsonObject );
 	}
 	public InputStream buildAsInputStream(boolean inPretty) {
 		try {
@@ -59,6 +59,11 @@ public class Job {
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getCanonicalName() +" "+ jsonObject;
 	}
 
 	public static JsonObject buildAsObject(String inProperty, String inValue) {
@@ -72,5 +77,7 @@ public class Job {
 	public static String buildAsString(String inProperty, String inValue, boolean inPretty) {
 		return create().put(inProperty, inValue).buildAsString(inPretty);
 	}
+	
+	
 	
 }

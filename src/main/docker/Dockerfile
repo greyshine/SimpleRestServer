@@ -5,8 +5,9 @@ RUN apt-get -y update
 
 RUN mkdir -p /opt/sirese/bin/
 RUN mkdir -p /opt/sirese/home/
+RUN mkdir -p /opt/sirese/home/logs
 
-COPY SiReSe-0.1-SNAPSHOT.jar /opt/sirese/bin/
+COPY SiReSe-0.2-SNAPSHOT.jar /opt/sirese/bin/
 
 RUN ls -laR /opt
 
@@ -18,6 +19,6 @@ RUN date -R >> /opt/sirese/home/start.info
 
 VOLUME ["/opt/sirese/home/"]
 
-CMD java -jar /opt/sirese/bin/SiReSe-0.1-SNAPSHOT.jar -path /opt/sirese/home/
+CMD java -jar /opt/sirese/bin/SiReSe-0.2-SNAPSHOT.jar -path /opt/sirese/home/
 
 

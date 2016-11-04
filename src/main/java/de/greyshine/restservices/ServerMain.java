@@ -48,6 +48,14 @@ import de.greyshine.restservices.web.WebAdminFilter;
  */
 public class ServerMain {
 
+	static {
+		// must happen at very beginning!
+		final String theLogDirProperty = System.getProperty( "logDir" ); 
+		if ( theLogDirProperty == null || theLogDirProperty.trim().isEmpty() ) {
+			System.setProperty( "logDir" , "." );
+		}
+	}
+	
 	static final Log LOG = LogFactory.getLog(ServerMain.class);
 	
 	static final int DEFAULT_PORT = 7777;
@@ -112,7 +120,7 @@ public class ServerMain {
 			theClassNames.append(theClassNames.length() == 0 ? "" : ",");
 			theClassNames.append(aClass.getCanonicalName());
 
-			LOG.debug("announced class: " + aClass.getCanonicalName());
+			LOG.debug("registering class: " + aClass.getCanonicalName());
 		}
 		
 		// https://nikolaygrozev.wordpress.com/2014/10/16/rest-with-embedded-jetty-and-jersey-in-a-single-jar-step-by-step/
@@ -138,7 +146,7 @@ public class ServerMain {
 			context.addFilter(new FilterHolder(aServletFilterInfo.getFilter()), thePath, theDts);
 		}
 
-		if (inCfg.isWebAdminEnabled()) {
+		if (inCfg.isWebAdministrationEnabled()) {
 
 			final FilterHolder theWebGuiHolder = context.addFilter(WebAdminFilter.class,
 					WebAdminFilter.URI_PREFIX + "/*", EnumSet.allOf(DispatcherType.class));
@@ -196,15 +204,25 @@ public class ServerMain {
 	}
 
 	private void initLog4J() {
-
+		
+		final File logDir = Utils.getCanonicalFileSafe( new File( basepath, "logs" ) );
+		
+		if ( Utils.isEquals( ".", System.getProperty( "logDir" ) ) ) {
+			System.setProperty( "logDir" , logDir.getAbsolutePath() );
+		}
+		
 		final File theFileLog4j = new File(basepath, "log4j.xml");
-
+		
+		if ( !logDir.exists() ) {
+			logDir.mkdirs();
+		}
+		
 		if (!theFileLog4j.exists()) {
 
 			try {
 
 				Utils.copySafe(Utils.getResource("log4j.xml"), new FileOutputStream(theFileLog4j), true, true);
-
+				
 			} catch (Exception e) {
 				// swallow
 			}
@@ -427,10 +445,30 @@ public class ServerMain {
 	private static class JsonConfiguration implements IConfiguration {
 		
 		final JsonObject json;
-		//final Utils.Kvp<String, String> userCredentials;
+		final Utils.Kvp<String, String> userCredentials;
 		
 		public JsonConfiguration(JsonObject inJo) {
+			
 			json = inJo;
+			
+			userCredentials = initUserCredentials();
+		}
+
+		private Kvp<String, String> initUserCredentials() {
+			
+			final String theUsername = Utils.executeSafe(json, inJson -> {
+				return json.get( "user" ).getAsJsonObject().entrySet().iterator().next().getValue().getAsString();
+			});
+			
+			final String thePassword = Utils.executeSafe(json, inJson -> {
+				return json.get( "user" ).getAsJsonObject().get( theUsername ).getAsString();
+			} );
+
+			if ( theUsername == null ) {
+				return null;
+			}
+			
+			return new Kvp<String, String>(theUsername, thePassword);
 		}
 
 		@Override
@@ -524,7 +562,7 @@ public class ServerMain {
 		}
 
 		@Override
-		public boolean isWebAdminEnabled() {
+		public boolean isWebAdministrationEnabled() {
 			try {
 				return Boolean.TRUE.equals( json.get( "webadmin" ).getAsBoolean() );
 			} catch (Exception e) {
@@ -576,8 +614,7 @@ public class ServerMain {
 
 		@Override
 		public Kvp<String, String> getUserCredentials() {
-			// TODO Auto-generated method stub
-			return null;
+			return userCredentials;
 		}
 	}
 
@@ -674,7 +711,7 @@ public class ServerMain {
 		}
 
 		@Override
-		public boolean isWebAdminEnabled() {
+		public boolean isWebAdministrationEnabled() {
 			return MainUtils.isArg(inArgs, "-webadmin");
 		}
 
