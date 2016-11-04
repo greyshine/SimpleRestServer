@@ -14,7 +14,11 @@ info = function(inMsg) {
 		$('#infos').empty().append(inMsg).show();	
 	}
 };
-
+/**
+ * Returns a form value safely
+ * @param inCss
+ * @returns
+ */
 function getFv(inCss) {
 	var v = '';
 	try {
@@ -30,6 +34,7 @@ function getFv(inCss) {
 }
 
 app = {
+		
 	load:function(inUrl) {
 		
 		var theResult = '';
@@ -55,10 +60,13 @@ app = {
 	put:{},
 	patch:{},
 	delete:{},
+	files:{},
 	imageGreetings:{},
 };
 
 app.status.click = function($a) {
+	
+	alert();
 	
 	$('nav.navbar li.active').removeClass('active');
 	$a = $($a).parent().addClass('active');
@@ -87,6 +95,38 @@ app.post.click = function($a) {
 	$a = $($a).parent().addClass('active');
 	$('#content').empty().append( app.load( 'rest-post.html' ) );
 };
+app.post.handleFileSelected = function(inEvent) {
+	
+	if ( inEvent == null || inEvent.target == null || inEvent.target.files == null ) { return; }
+	if ( inEvent.target.files.length < 1 ) { return; }
+	
+	app.post.loadFile(inEvent.target.files[0]);
+};
+app.post.loadFile = function(inFile) {
+	if ( inFile == null ) { return; }
+	console.log( inFile.name );
+	
+	var theReader = new FileReader();
+	
+	theReader.onloadend = function(inEvt) {
+		
+		/** try to parse as json */
+		try {
+		
+			JSON.parse(inEvt.target.result);
+			
+			$('#restPostJson').html( inEvt.target.result );
+			
+		} catch (e) {
+			
+			alert('cannot json parse file: '+ inFile.name);
+			// unable to pa
+		}
+	};
+	
+	theReader.readAsText(inFile);
+}
+
 app.put.click = function($a) {
 	alert();
 	$('nav.navbar li.active').removeClass('active');
@@ -111,11 +151,52 @@ app.imageGreetings.click = function($a) {
 	$a = $($a).parent().addClass('active');
 	$('#content').empty().append( app.load( 'imageGreetings.html' ) );
 };
+app.files.click = function($a) {
+	alert();
+	$('nav.navbar li.active').removeClass('active');
+	$a = $($a).parent().addClass('active');
+	$('#content').empty().append( app.load( 'files-list.html' ) );
+	
+	$.ajax( {
+		method:'GET',
+		url:'/file',
+		async:false,
+		success: function(inData) {
+			
+			for(var idx in inData) {
+				
+				var binary = inData[idx];
+				
+				binary.mime = binary.mime || '&lt;unknown&gt;'
+				
+				var tr$ = $('<tr>');
+				
+				tr$.append( $('<td/>').append( binary.id ).append('<br/>')
+						.append( $('<a/>').attr('href', '/file/'+binary.id +"?_download" ).append( 'download' ) )
+						.append('&nbsp;')
+						.append( $('<a target="_blank" download/>').attr('href', '/file/'+binary.id ).append( 'open' ) ) );
+				
+				tr$.append( $('<td/>').append( binary.mime ) );
+				tr$.append( $('<td/>').append( binary.size ).append('<br/>')
+									  .append('updated: '+ binary.updated ).append('<br/>')
+									  .append('created: '+ binary.created ).append('<br/>')
+									  .append('SHA-256: '+ binary.sha256 ) );
+				
+				//li$.find('a').attr('href','/file/'+ binary.id );
+				
+				$('table#files-list tbody').append( tr$ );
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError ) {
+			alert( xhr.status +' '+ thrownError );
+		}
+		
+	} );
+	
+};
 
 app.get.submitForm = function() {
-	
 	alert(null);
-	
 	var theUrl = "/"+$( '#restGetCollection' ).val();
 	if ($( '#restGetId' ).val() != ''  ) {
 		theUrl = theUrl +'/'+$( '#restGetId' ).val();
@@ -123,6 +204,13 @@ app.get.submitForm = function() {
 	
 	var isParam = false;
 	
+	if ( $('#restGetEnvelope').is(':checked') ) {
+		
+		theUrl += isParam ? '&' : '?';
+		isParam = true;
+		theUrl += '_envelope=true';
+	}
+
 	if ( $('#restGetEmbed').is(':checked') ) {
 		
 		theUrl += isParam ? '&' : '?';
@@ -235,8 +323,10 @@ app.delete.submitForm = function() {
 	});
 };
 
+/*
 app.imageGreetings.click = function() {
 	
 };
+*/
 
 

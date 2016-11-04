@@ -4,7 +4,7 @@
 
 	<groupId>de.greyshine.restservices</groupId>
 	<artifactId>SimpleRestServer</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 
 	<properties>
 		<!-- https://rterp.wordpress.com/2012/03/16/stamping-version-number-and-build-time-in-properties-file-with-maven/ -->
@@ -14,9 +14,6 @@
 	</properties>
 
 	<build>
-	
-		
-
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -28,12 +25,9 @@
 			</plugin>
 
 			<!-- Lets address standalone Jetty development first -->
-			<!--<plugin>
-				<groupId>org.apache.maven.plugins</groupId> 
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
-				<configuration><failOnMissingWebXml>false</failOnMissingWebXml> </configuration>
-			</plugin> -->
+			<!--<plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
+				<version>2.6</version> <configuration><failOnMissingWebXml>false</failOnMissingWebXml> 
+				</configuration> </plugin> -->
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -53,15 +47,15 @@
 							<mainClass>de.greyshine.restservices.ServerMain</mainClass>
 						</manifest>
 					</archive>
-					
+
 					<descriptors>
-          				<descriptor>src/main/maven/jar-assembly.xml</descriptor>
-        			</descriptors>
+						<descriptor>src/main/maven/jar-assembly.xml</descriptor>
+					</descriptors>
 
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-					
+
 					<finalName>SiReSe</finalName>
 
 				</configuration>
@@ -85,31 +79,26 @@
 		<!-- <version>3.1.0</version> -->
 		<!-- <scope>provided</scope> -->
 		<!-- </dependency> -->
-
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.5</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
 			<version>2.1.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3.5</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.3.5</version>
 		</dependency>
-
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -121,7 +110,6 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.15</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -129,31 +117,26 @@
 		</dependency>
 
 		<!-- JETTY etc -->
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-plus</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-annotations</artifactId>
 			<version>${jetty.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>

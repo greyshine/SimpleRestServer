@@ -3,6 +3,7 @@ package de.greyshine.restservices;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 public interface IBinaryStorageService extends IApplicationService {
 	
@@ -10,6 +11,7 @@ public interface IBinaryStorageService extends IApplicationService {
 	IBinary update(String inId, InputStream inIs);
 	IBinary read(String inId);
 	IBinary delete(String inId);
+	List<IBinary> list(Integer inOffset, Integer inLength);
 	
 	interface IBinary {
 		
@@ -31,5 +33,7 @@ public interface IBinaryStorageService extends IApplicationService {
 		String getEtag();
 		String getMime();
 	}
+
+	
 
 }

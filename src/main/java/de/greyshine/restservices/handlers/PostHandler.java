@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.JsonElement;
 
+import de.greyshine.restservices.ApplicationException;
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IJsonStorageService;
 import de.greyshine.restservices.IJsonStorageService.IDocument;

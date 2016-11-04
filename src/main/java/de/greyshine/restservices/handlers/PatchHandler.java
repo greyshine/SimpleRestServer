@@ -20,6 +20,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
+import de.greyshine.restservices.ApplicationException;
 import de.greyshine.restservices.Constants;
 import de.greyshine.restservices.IBinaryStorageService.IBinary;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
@@ -104,8 +105,7 @@ public class PatchHandler extends AbstractHandler {
 		return !inItem.isExceptional() ? HtmlUtils.respond200Ok( inItem, requestInfo.isVerbose() ) : HtmlUtils.respond500ServerError( inItem.getException() );
 	}
 
-	private Response doPatchJsonValue(IDocument inDocument, String inCollectionName, String inId, String inProperty)
-			throws IOException {
+	private Response doPatchJsonValue(IDocument inDocument, String inCollectionName, String inId, String inProperty) throws IOException {
 
 		final boolean isPropertyArrayIndex = inProperty.matches("\\[[0-9+]\\]");
 

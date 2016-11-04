@@ -52,7 +52,6 @@ public class WebAdminFilter implements Filter {
 		final HttpServletResponse inRes = (HttpServletResponse) response;
 
 		if (handleLogin(inReq, inRes) == false) {
-			
 			return;
 		}
 		

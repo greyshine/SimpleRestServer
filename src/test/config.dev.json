@@ -3,8 +3,11 @@
 	"path":"target/home-test-dev-application",
 	
 	"_default_port.http": 7777,
-	"_port.http": 7777,
+	"port.http": 7777,
 	"port.https": 7778,
+	
+	"webadmin":true,
+	
 	"_comment_user":"take the form of an own string-string-object { <username>:<password> }",
 	"user": {"admin":"admin"},
 	"keystore":"src/test/https-keystore/keystore",		

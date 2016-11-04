@@ -12,12 +12,15 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.JsonObject;
 
+import de.greyshine.restservices.ApplicationException;
 import de.greyshine.restservices.IBinaryStorageService;
 import de.greyshine.restservices.IStatusReportable;
 import de.greyshine.restservices.util.Job;
@@ -282,8 +285,6 @@ public class BinaryFileStorage implements IBinaryStorageService, IStatusReportab
 		final Wrapper<Long> fileCount = new Wrapper<Long>(0L);
 		final Wrapper<Long> fileSizes = new Wrapper<Long>(0L);
 		
-		
-		
 		try {
 			Files.walkFileTree( binaryDir.toPath() , new SimpleFileVisitor<Path>() {
 
@@ -306,8 +307,35 @@ public class BinaryFileStorage implements IBinaryStorageService, IStatusReportab
 			theJob.put("error-on-file-traversing", e.getMessage());
 		}
 		
-		
-		
 		return theJob.build();
 	}
+
+	@Override
+	public List<IBinary> list(Integer inOffset, Integer inLength) {
+		
+		final List<IBinary> theResults = new ArrayList<>();
+		
+		try {
+			
+			Files.walkFileTree( binaryDir.toPath() , new SimpleFileVisitor<Path>() {
+
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					
+					theResults.add( new Binary(file.toFile().getName(), file.toFile()) );
+					
+					return FileVisitResult.CONTINUE;
+				}
+				
+			} );
+			
+		} catch (IOException e) {
+			
+			throw new ApplicationException(null, e.getMessage(), e);
+		}
+		
+		return theResults;
+	}
+	
+	
 }

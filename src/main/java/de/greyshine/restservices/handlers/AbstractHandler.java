@@ -12,12 +12,14 @@ import org.apache.commons.logging.LogFactory;
 import com.google.gson.JsonElement;
 
 import de.greyshine.restservices.Application;
+import de.greyshine.restservices.ApplicationException;
 import de.greyshine.restservices.IBinaryStorageService;
 import de.greyshine.restservices.IConfiguration;
 import de.greyshine.restservices.IJsonStorageService;
 import de.greyshine.restservices.IJsonStorageService.IDocument;
 import de.greyshine.restservices.RequestContext;
 import de.greyshine.restservices.RequestInfo;
+import de.greyshine.restservices.ApplicationException.EReason;
 import de.greyshine.restservices.util.HtmlUtils;
 import de.greyshine.restservices.util.JsonUtils;
 import de.greyshine.restservices.util.Utils;
@@ -78,13 +80,13 @@ public abstract class AbstractHandler {
 		return Response.ok().entity(JsonUtils.jsonToString(inJson, true)).build();
 	}
 
-	protected JsonElement getRequestEntityJson() throws IOException {
+	protected JsonElement getRequestEntityJson()	 {
 		
 		if ( jsonElement != null ) { return jsonElement; }
 		else if ( !isJsonContentTypeRequest ) {
-			throw new IOException("no content-type application/json declared");
+			
+			throw new ApplicationException( EReason.INPUT_IS_NO_JSON, "no content-type application/json declared").technicalError(false);
 		}
-		
 
 		try {
 		
@@ -96,7 +98,7 @@ public abstract class AbstractHandler {
 			
 		} catch (Exception e) {
 			
-			throw new IOException("no proper json data received: "+e, e);
+			throw new ApplicationException( EReason.INPUT_IS_NO_JSON, "reading json entity stream failed", e).technicalError(false);
 		}
 		
 		return jsonElement;

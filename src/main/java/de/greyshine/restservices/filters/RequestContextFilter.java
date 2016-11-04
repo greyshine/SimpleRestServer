@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import de.greyshine.restservices.ApplicationException;
 import de.greyshine.restservices.RequestContext;
+import de.greyshine.restservices.util.Utils;
 
 public class RequestContextFilter implements Filter {
 	
@@ -34,9 +36,33 @@ public class RequestContextFilter implements Filter {
 		
 			chain.doFilter(request, response);
 			
+		} catch (ApplicationException e) {
+			
+			if ( e.isTechnicalError ) {
+				
+				LOG.error( e, e );
+			}
+			
 		} catch (Exception e) {
 			
-			LOG.error( e, e );
+			final ServletException servletException = Utils.castSafe( e ); 
+			final ApplicationException applicationException = servletException == null ? null : Utils.castSafe( servletException.getCause() ); 
+			
+			if ( applicationException != null ) {
+				
+				if ( applicationException.isTechnicalError ) {
+					
+					LOG.error( applicationException, applicationException );
+				}
+				
+			} else if ( servletException != null ) {
+				
+				LOG.error( servletException.getCause(), servletException.getCause() );
+				
+			} else {
+				
+				LOG.error( e, e );
+			}
 		}
 	}
 

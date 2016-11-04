@@ -752,7 +752,7 @@ public abstract class Utils {
 		
 		try {
 			
-			return inFunction == null ? null : inFunction.apply(null);
+			return inFunction == null ? null : inFunction.apply(inInputParameter);
 			
 		} catch (Exception e) {
 			LOG.debug( e, e );

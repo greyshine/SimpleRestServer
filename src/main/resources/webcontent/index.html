@@ -26,19 +26,16 @@ body {
 		<div class="navbar-brand">Simple Rest Server</div>
 		<div class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a id="nav-restGet" href="#"
-					onclick="app.get.click(this); return false;">GET</a></li>
-				<li><a id="nav-restPost" href="#"
-					onclick="app.post.click(this); return false;">POST</a></li>
-				<li><a id="nav-restPut" href="#"
-					onclick="app.put.click(this); return false;">PUT</a></li>
-				<li><a id="nav-restPatch" href="#"
-					onclick="app.patch.click(this); return false;">PATCH</a></li>
-				<li><a id="nav-restDelete" href="#"
-					onclick="app.delete.click(this); return false;">DELETE</a></li>
-				<li><a id="nav-status" href="#"
-					onclick="app.status.click(this); return false;">Status</a></li>
-				<!-- funny feature comes later 
+				<li><a id="nav-restGet" href="#" onclick="app.get.click(this); return false;">GET</a></li>
+				<li><a id="nav-restPost" href="#" onclick="app.post.click(this); return false;">POST</a></li>
+				<li><a id="nav-restPut" href="#" onclick="app.put.click(this); return false;">PUT</a></li>
+				<li><a id="nav-restPatch" href="#" onclick="app.patch.click(this); return false;">PATCH</a></li>
+				<li><a id="nav-restDelete" href="#"	onclick="app.delete.click(this); return false;">DELETE</a></li>
+				<li><a id="nav-filesList" href="#"	onclick="app.files.click(this); return false;">Files</a></li>
+				<li>
+					<a id="nav-status" href="#" onclick="app.status.click(this); return false;">Status</a>
+				</li>
+				<!-- funny feature comes later  
 				<li><a id="nav-imageGreetings" href="#"
 					onclick="app.imageGreetings.click(this); return false;">Image-Greetings</a></li>
 				-->
@@ -73,7 +70,7 @@ body {
 				}
 			} );
 			
-			$('#nav-restPost').click();
+			$('#nav-status').click();
 		});
 	</script>
 

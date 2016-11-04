@@ -68,6 +68,7 @@ public abstract class HtmlUtils {
 	public static Response respond200Ok(JsonElement inJe) {
 		
 		ResponseBuilder r = Response.ok();
+		r.header( HEADER_CONTENT_TYPE, "application/json");
 		
 		if ( inJe != null ) {
 			
