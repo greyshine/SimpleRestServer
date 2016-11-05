@@ -1,3 +1,3 @@
 @echo off
 
-java -jar SiReSe-0.3-SNAPSHOT.jar -user admin:admin -webadmin -path %1
+java -jar SiReSe-0.4-SNAPSHOT.jar -user admin:admin -webadmin -path %1

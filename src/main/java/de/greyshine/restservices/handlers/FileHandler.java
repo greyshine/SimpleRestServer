@@ -79,7 +79,6 @@ public class FileHandler extends AbstractHandler {
 			
 			Job theJob = new Job();
 			theJob.put( "id" , aBinary.getId() );
-			theJob.put( "mime" , aBinary.getMime() );
 			theJob.put( "created" , aBinary.getCreated().toString() );
 			theJob.put( "updated" , aBinary.getUpdated().toString() );
 			theJob.put( "size" , Utils.toStringDataSize( aBinary.getLength() ) );

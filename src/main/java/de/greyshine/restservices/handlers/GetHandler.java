@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import de.greyshine.restservices.Constants;
@@ -130,7 +131,6 @@ public class GetHandler extends AbstractHandler {
 		HtmlUtils.decorate(theRb, theInfo, true);
 
 		return theRb.build();
-
 	}
 	
 
@@ -141,8 +141,31 @@ public class GetHandler extends AbstractHandler {
 			+ "/{property:"+Constants.REGEX_PROPERTYNAME +"}")
 	public Response doGetCollectionItem(@PathParam("collection") String inCollectionName, @PathParam("id") String inId, @PathParam("property") String inProperty) {
 		
-		throw new UnsupportedOperationException("not yet implemented");
+		final String theIfNoneMatch = Utils.trimToEmpty(request.getHeader("If-None-Match"));
 		
+		final IDocument theInfo = application.getDocumentStorageService().read(inCollectionName, inId);
+		
+		if (theInfo.isExceptional()) {
+
+			LOG.error(theInfo.getException());
+			return HtmlUtils.respond500ServerError();
+
+		} else if (theInfo.isNotFound()) {
+
+			return HtmlUtils.respond404NotFound();
+		}
+		
+		JsonElement theJsonElement = null;
+		
+		try {
+			theJsonElement = theInfo.getDataJson();
+		} catch (IOException e) {
+			
+			LOG.error(e);
+			return HtmlUtils.respond500ServerError();
+		}
+		
+		throw new UnsupportedOperationException("not yet implemented");
 	}
 
 }

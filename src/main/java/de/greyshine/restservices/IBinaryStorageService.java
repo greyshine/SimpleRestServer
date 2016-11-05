@@ -31,9 +31,5 @@ public interface IBinaryStorageService extends IApplicationService {
 		ZonedDateTime getUpdated();
 		
 		String getEtag();
-		String getMime();
 	}
-
-	
-
 }

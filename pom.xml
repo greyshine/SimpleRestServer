@@ -4,7 +4,7 @@
 
 	<groupId>de.greyshine.restservices</groupId>
 	<artifactId>SimpleRestServer</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 
 	<properties>
 		<!-- https://rterp.wordpress.com/2012/03/16/stamping-version-number-and-build-time-in-properties-file-with-maven/ -->

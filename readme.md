@@ -11,18 +11,22 @@ I just wanted to get it out of the door.
 Tests are running.
 
 ## Contents
-<!-- process:toc(2) -->
-* [Quickstart](#Quickstart)
-* [Technologies used](#Technologies used)
-* ...
+* Quickstart
 
 <a name="Quickstart"></a>
 ## Quickstart
+
+Prequesites:
+* have java 8 installed
+* curl is optional. It acts as the client.
+* you have a folder with the jar version downloaded from the [distributions](https://github.com/greyshine/SimpleRestServer/tree/master/dist/latest)
+
 * Have java installed and call on terminal:  
 
   ``java -version``  
   
   Did you see meaningful output?
+  
 * Get the latest release:  
 
   TODO: reference to dowload:``curl -o ``
@@ -68,15 +72,15 @@ TODO fill
  
  Basically values are being set as they are parseable to. _true_ is boolean. _-12.43_ will be a number. Anything else is a String.
  
- Setting a value definetly as a text by quoting it: 
+ Setting a value definetly as a text by quoting it:   
  ``curl -X PATCH -H"Content-Type: application/json" -d'"someValue"' address/<collection>/<id>/<property>``
  
- Setting an empty text is done by
- ``curl -X PATCH -H"Content-Type: application/json" -D'' address/<collection>/<id>/<property>``
- or
+ Setting an empty text is done by  
+ ``curl -X PATCH -H"Content-Type: application/json" -D'' address/<collection>/<id>/<property>``  
+ or  
  ```curl -X PATCH -H"Content-Type: application/json" -D'""' address/<collection>/<id>/<property>``
 
- Setting a null value without defining the -d flag:
+ Setting a null value without defining the -d flag:  
  ```curl -X PATCH -H"Content-Type: application/json" address/<collection>/<id>/<property>`` 
 
 ## Collections
@@ -85,12 +89,12 @@ The name of a collection always ends with an 's'. This indicates the plural of h
 
 
 ##Http-Method META
-* Ping  
-
- You can run a simple ping which returns a simple pong with a timestamp 
-
- ``curl -X META <address:port>/ping``
-
+* Ping    
+ 
+ You can run a simple ping which returns a simple pong with a timestamp  
+ 
+ ``curl -X META <address:port>/ping``  
+ 
  which will answer:   
  
  ```{"pong":"yyyy-MM-ddTHH:mm:ss.SSS"}```

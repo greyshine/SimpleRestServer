@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +26,14 @@ import de.greyshine.restservices.util.JsonUtils;
 import de.greyshine.restservices.util.Utils;
 
 public abstract class AbstractHandler {
+	
+	public enum RequestType {
+		
+		GET_COLLECTION,
+		GET_COLLECTION_ITEM
+		;
+		
+	}
 	
 	@SuppressWarnings("unused")
 	private static final Log LOG = LogFactory.getLog( AbstractHandler.class );
@@ -137,6 +146,14 @@ public abstract class AbstractHandler {
 				theOriginalIs.close();
 			}
 		};
+	}
+	
+	public JsonElement beforeHandle(JsonElement inRequestElement) {
+		return inRequestElement;
+	}
+	
+	public JsonElement afterHandle(JsonElement inResponseElement) {
+		return inResponseElement;
 	}
 	
 }

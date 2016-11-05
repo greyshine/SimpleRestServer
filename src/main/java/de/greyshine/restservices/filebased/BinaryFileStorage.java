@@ -268,11 +268,6 @@ public class BinaryFileStorage implements IBinaryStorageService, IStatusReportab
 		public String getEtag() {
 			return null;
 		}
-
-		@Override
-		public String getMime() {
-			return null;
-		}
 	}
 
 

@@ -167,19 +167,18 @@ app.files.click = function($a) {
 				
 				var binary = inData[idx];
 				
-				binary.mime = binary.mime || '&lt;unknown&gt;'
-				
 				var tr$ = $('<tr>');
 				
 				tr$.append( $('<td/>').append( binary.id ).append('<br/>')
-						.append( $('<a/>').attr('href', '/file/'+binary.id +"?_download" ).append( 'download' ) )
+						.append( $('<a href="" download/>').attr('href', '/file/'+binary.id ).append( 'download' ) )
 						.append('&nbsp;')
 						.append( $('<a target="_blank" download/>').attr('href', '/file/'+binary.id ).append( 'open' ) ) );
 				
-				tr$.append( $('<td/>').append( binary.mime ) );
-				tr$.append( $('<td/>').append( binary.size ).append('<br/>')
-									  .append('updated: '+ binary.updated ).append('<br/>')
-									  .append('created: '+ binary.created ).append('<br/>')
+				tr$.append( $('<td/>').append( binary.updated ) );
+				
+				tr$.append( $('<td/>').append( binary.size ) );
+				
+				tr$.append( $('<td/>').append('created: '+ binary.created ).append('<br/>')
 									  .append('SHA-256: '+ binary.sha256 ) );
 				
 				//li$.find('a').attr('href','/file/'+ binary.id );
@@ -190,16 +189,19 @@ app.files.click = function($a) {
 		error: function(xhr, ajaxOptions, thrownError ) {
 			alert( xhr.status +' '+ thrownError );
 		}
-		
 	} );
-	
 };
 
 app.get.submitForm = function() {
 	alert(null);
 	var theUrl = "/"+$( '#restGetCollection' ).val();
 	if ($( '#restGetId' ).val() != ''  ) {
+	
 		theUrl = theUrl +'/'+$( '#restGetId' ).val();
+	
+		if ($( '#restGetAttribute' ).val() != ''  ) {
+			theUrl = theUrl +'/'+$( '#restGetAttribute' ).val();
+		}
 	}
 	
 	var isParam = false;

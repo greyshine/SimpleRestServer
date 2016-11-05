@@ -6,6 +6,8 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,6 +37,12 @@ public class RequestContext implements IStatusReportable {
 	private String user;
 	private HttpServletRequest httpServletRequest;
 	private HttpServletResponse httpServletResponse;
+	
+	public ResponseBuilder responseBuilder = Response.ok();
+	
+	public Response buildResponse() {
+		return responseBuilder.build();
+	}
 	
 	public String getUser() {
 		
@@ -72,6 +80,8 @@ public class RequestContext implements IStatusReportable {
 
 	public void init(HttpServletRequest inHttpServletRequest, HttpServletResponse inHttpServletResponse) {
 
+		responseBuilder = Response.ok();
+		
 		try {
 		
 			application = (Application) inHttpServletRequest.getServletContext().getAttribute( Application.SERVLETCONTEXT_KEY );
