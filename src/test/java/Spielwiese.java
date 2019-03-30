@@ -1,29 +1,42 @@
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class Spielwiese {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
+		URL u = new URL("https://www.google.de");
+		u = new URL("http://127.0.0.1:8080/status");
 		
-		System.out.println( new B() {
-
-			{
-				System.out.println( "1 "+ getS() );
-				System.out.println( "2 "+super.getS() );
+		
+		 HttpURLConnection connection = (HttpURLConnection) u
+                 .openConnection();
+		
+		 connection.setRequestProperty( "user-agent" , "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36");
+		 
+		 connection.connect();
+		 
+		 System.out.println( connection.getResponseCode() );
+		 System.out.println( connection.getResponseMessage() );
+		 
+		 System.out.println( connection.getContentLength() );
+		 System.out.println( connection.getContentEncoding() );
+		 System.out.println( connection.getContentType() );
+		 
+		 
+		 
+		try (InputStream is =  connection.getInputStream() ) {
+			
+			while( is.available()>0 ) {
+				
+				System.out.print((char)is.read());
 			}
 			
-			@Override
-			public String getS() {
-				return "OVER";
-			}
-			
-		} );
-		
-		
-		
+		} 
 		
 	}
 	
